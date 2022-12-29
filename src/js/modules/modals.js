@@ -6,13 +6,13 @@ const modals = () => {
     // }, 60000);
 
 
-    const showModalByTime = (modalSelector) => {
-        const modal = document.querySelector(modalSelector);
-
-
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    };
+    // const showModalByTime = (modalSelector) => {
+    //     const modal = document.querySelector(modalSelector);
+    //
+    //
+    //     modal.style.display = 'block';
+    //     document.body.style.overflow = 'hidden';
+    // };
 
 
     function bindModal(modalSelector, triggerSelector, closeSelector) {
@@ -23,7 +23,7 @@ const modals = () => {
 
         trigger.forEach(element => {
             element.addEventListener('click', (event) => {
-                if (modalTimerId) clearInterval(modalTimerId);
+                // if (modalTimerId) clearInterval(modalTimerId);
                 if (event.target) event.preventDefault();
 
 
