@@ -1,16 +1,13 @@
+import createOrDeleteStatusMessage from "./createOrDeleteStatusMessage";
+import checkNumInputs from "./checkNumInputs";
 import {postData} from "../services/cervices";
 
 
-const forms = () => {
+const forms = (state) => {
     const allForms = document.querySelectorAll('form');
-    const phoneInputs = document.querySelectorAll('input[name="user_phone"]');
 
 
-    phoneInputs.forEach(input => {
-        input.addEventListener('input', () => {
-             input.value = input.value.replace(/\D/, '');
-        });
-    });
+    checkNumInputs('input[name="user_phone"]')
 
 
     const messages = {
@@ -23,24 +20,31 @@ const forms = () => {
     const bindPostData = (form) => {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
+            let statusMessage;
 
 
-            const statusMessage = document.createElement('div');
-            statusMessage.innerHTML = messages.loading;
-            statusMessage.classList.add('status');
-            form.append(statusMessage)
+            statusMessage = createOrDeleteStatusMessage(null, messages.loading);
+            form.append(statusMessage);
 
 
             const formData = new FormData(form);
+            if (form.getAttribute('data-calc') === 'end') {
+                for (const key in state) {
+                    formData.append(key, state[key]);
+                    delete state[key];
+                }
+            }
 
 
             postData('assets/server.php', formData)
                 .then(data => {
                     console.log(data);
-                    statusMessage.innerHTML = messages.success;
+                    statusMessage = createOrDeleteStatusMessage(statusMessage, messages.success);
+                    form.append(statusMessage);
                 })
                 .catch(() => {
-                    statusMessage.innerHTML = messages.failure;
+                    statusMessage = createOrDeleteStatusMessage(statusMessage, messages.failure);
+                    form.append(statusMessage);
                 })
                 .finally(() => {
                     allForms.forEach(form => form.reset());
