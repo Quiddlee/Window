@@ -23,7 +23,7 @@ const forms = (state) => {
             let statusMessage;
 
 
-            statusMessage = createOrDeleteStatusMessage(null, messages.loading);
+            statusMessage = createOrDeleteStatusMessage(messages.loading);
             form.append(statusMessage);
 
 
@@ -39,11 +39,11 @@ const forms = (state) => {
             postData('assets/server.php', formData)
                 .then(data => {
                     console.log(data);
-                    statusMessage = createOrDeleteStatusMessage(statusMessage, messages.success);
+                    statusMessage = createOrDeleteStatusMessage(messages.success, statusMessage);
                     form.append(statusMessage);
                 })
                 .catch(() => {
-                    statusMessage = createOrDeleteStatusMessage(statusMessage, messages.failure);
+                    statusMessage = createOrDeleteStatusMessage(messages.failure,statusMessage);
                     form.append(statusMessage);
                 })
                 .finally(() => {

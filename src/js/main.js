@@ -8,7 +8,14 @@ import './slider';
 window.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    const modalState = {};
+
+    const modalState = {
+        form: 0,
+        width: null,
+        type: 'tree',
+        height: null,
+        profile: null
+    };
 
 
     tabs('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
