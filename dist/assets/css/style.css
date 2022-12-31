@@ -18,6 +18,54 @@ body {
   color: red;
 }
 
+.form_faded {
+  animation-name: form_faded;
+  animation-duration: 0.5s;
+}
+
+@keyframes form_faded {
+  from {
+    left: 39.4%;
+    opacity: 0.1;
+    transform: scale(0);
+  }
+  to {
+    left: 39.6%;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.faded {
+  animation-name: faded;
+  animation-duration: 1.3s;
+}
+
+@keyframes faded {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadedOut {
+  animation-name: fadedOut;
+  animation-duration: 0.1s;
+}
+
+@keyframes fadedOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.1;
+    transform: scale(0);
+  }
+}
+
 a:hover {
   text-decoration: none;
 }
