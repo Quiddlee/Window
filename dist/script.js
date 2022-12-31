@@ -14122,11 +14122,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
-/* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
-/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
-/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
-/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
-/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
+/* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
+
 
 
 
@@ -14144,13 +14146,14 @@ window.addEventListener('DOMContentLoaded', () => {
     profile: null
   };
   const deadline = new Date(Date.parse(new Date()) * 1.000361623);
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.decoration_slider', '.no_click', '[data-decoration-content]', 'after_click');
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_3__["default"])('.container1', deadline);
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])('.decoration_slider', '.no_click', '[data-decoration-content]', 'after_click');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_5__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_4__["default"])('.container1', deadline);
   Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_0__["default"])(modalState);
-  Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState);
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(modalState);
+  Object(_modules_modals__WEBPACK_IMPORTED_MODULE_2__["default"])(modalState);
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
+  Object(_modules_images__WEBPACK_IMPORTED_MODULE_1__["default"])();
 });
 
 /***/ }),
@@ -14325,6 +14328,43 @@ const forms = state => {
   });
 };
 /* harmony default export */ __webpack_exports__["default"] = (forms);
+
+/***/ }),
+
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const images = () => {
+  const imgPopup = document.createElement('div');
+  const workSection = document.querySelector('.works');
+  const bigImage = document.createElement('img');
+  imgPopup.classList.add('popup');
+  bigImage.classList.add('popup_content');
+  bigImage.style.minWidth = '35%';
+  bigImage.style.maxHeight = '85%';
+  workSection.append(imgPopup);
+  imgPopup.append(bigImage);
+  workSection.addEventListener('click', event => {
+    const target = event.target;
+    event.preventDefault();
+    if (target && target.classList.contains('preview')) {
+      imgPopup.style.display = 'block';
+      bigImage.src = target.parentNode.href;
+      document.body.style.overflow = 'hidden';
+    }
+    if (target && target.matches('div.popup')) {
+      imgPopup.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+};
+/* harmony default export */ __webpack_exports__["default"] = (images);
 
 /***/ }),
 

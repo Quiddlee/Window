@@ -1,4 +1,5 @@
 import changeModalState from "./modules/changeModalState";
+import images from "./modules/images";
 import modals from "./modules/modals";
 import forms from "./modules/forms";
 import timer from "./modules/timer";
@@ -27,4 +28,5 @@ window.addEventListener('DOMContentLoaded', () => {
     changeModalState(modalState);
     modals(modalState);
     forms(modalState);
+    images();
 });
