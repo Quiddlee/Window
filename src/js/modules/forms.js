@@ -20,11 +20,7 @@ const forms = (state) => {
     const bindPostData = (form) => {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            let statusMessage;
-
-
-            statusMessage = createOrDeleteStatusMessage(messages.loading);
-            form.append(statusMessage);
+            const statusMessage = createOrDeleteStatusMessage(messages.loading, form, 4000);
 
 
             const formData = new FormData(form);
@@ -39,16 +35,15 @@ const forms = (state) => {
             postData('assets/server.php', formData)
                 .then(data => {
                     console.log(data);
-                    statusMessage = createOrDeleteStatusMessage(messages.success, statusMessage);
-                    form.append(statusMessage);
+                    statusMessage.remove();
+                    createOrDeleteStatusMessage(messages.success, form, 4000);
                 })
                 .catch(() => {
-                    statusMessage = createOrDeleteStatusMessage(messages.failure,statusMessage);
-                    form.append(statusMessage);
+                    statusMessage.remove();
+                    createOrDeleteStatusMessage(messages.failure, form, 4000);
                 })
                 .finally(() => {
                     allForms.forEach(form => form.reset());
-                    setTimeout(() => statusMessage.remove(), 4000);
                 });
         });
     }

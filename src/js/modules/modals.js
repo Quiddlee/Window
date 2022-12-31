@@ -1,4 +1,5 @@
 import createOrDeleteStatusMessage from "./createOrDeleteStatusMessage";
+import formVisualValidate from "./formVisualValidate";
 
 
 const modals = (state) => {
@@ -20,11 +21,7 @@ const modals = (state) => {
             if (!property || !secondProperty) {
                 if (statusMessage) statusMessage.remove();
                 formVisualValidate(property, selector);
-
-
-                statusMessage = createOrDeleteStatusMessage('Заполните данные');
-                modalElement.parentNode.append(statusMessage);
-                setTimeout(() => statusMessage.remove(), 4000);
+                statusMessage = createOrDeleteStatusMessage('Заполните данные', modalElement.parentNode, 4000);
             }
         }
 
@@ -73,24 +70,6 @@ const modals = (state) => {
     bindModal('.popup_engineer', '.popup_engineer_btn', '.popup_engineer .popup_close');
     bindModal('.popup_calc', '.popup_calc_btn', '.popup_calc_close');
     bindModal('.popup', '.phone_link', '.popup .popup_close');
-
-
-    const formVisualValidate = (property, selector) => {
-        if (!property) {
-            const element = document.querySelectorAll(selector);
-            element.forEach(e => {
-                e.style.border = 'solid 1px red';
-                e.style.borderRadius = '5%';
-                e.addEventListener('click', () => e.style.border = '');
-
-
-                setTimeout(() => {
-                    e.style.border = '';
-                    e.removeEventListener('click', () => e.style.border = '');
-                }, 4000);
-            });
-        }
-    }
 
 
     // const modalTimerId = setTimeout(() => {
