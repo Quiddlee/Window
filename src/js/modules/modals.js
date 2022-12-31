@@ -1,4 +1,5 @@
 import createOrDeleteStatusMessage from "./createOrDeleteStatusMessage";
+import calculateScrollWidth from "./calculateScrollWidth";
 import formVisualValidate from "./formVisualValidate";
 
 
@@ -8,6 +9,7 @@ const modals = (state) => {
         const windows = document.querySelectorAll('[data-modal]');
         const modal = document.querySelector(modalSelector);
         const close = document.querySelector(closeSelector);
+        const scroll = calculateScrollWidth();
         let statusMessage = null;
 
 
@@ -30,6 +32,14 @@ const modals = (state) => {
             element.addEventListener('click', (event) => {
                 // if (modalTimerId) clearInterval(modalTimerId);
                 if (event.target) event.preventDefault();
+                modal.childNodes[1].childNodes[1].classList.add('form_faded');
+                document.body.style.marginRight = `${scroll}px`;
+                document.body.style.overflow = 'hidden';
+
+
+                if (getComputedStyle(modal.childNodes[1].childNodes[1]).width.replace(/px/, '') > 400) {
+                    modal.querySelector('.popup_calc_content').style.left = '51.05%';
+                }
 
 
                 if (modal.getAttribute('data-modal') === 'calc') {
@@ -44,13 +54,14 @@ const modals = (state) => {
                     }
                 }
                 else modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
             });
         });
 
 
         close.addEventListener('click', () => {
             windows.forEach(window => window.style.display = 'none');
+            modal.classList.remove('form_faded');
+            document.body.style.marginRight = '0px';
             document.body.style.overflow = '';
         });
 
@@ -58,8 +69,10 @@ const modals = (state) => {
         modal.addEventListener('click', (event) => {
             if (event.target === modal && closeClickOverlay) {
                 windows.forEach(window => window.style.display = 'none');
-                modal.style.display = 'none';
+                modal.classList.remove('form_faded');
+                document.body.style.marginRight = '0px';
                 document.body.style.overflow = '';
+                modal.style.display = 'none';
             }
         });
     }

@@ -1,13 +1,16 @@
+import calculateScrollWidth from "./calculateScrollWidth";
+
+
 const images = () => {
-    const imgPopup = document.createElement('div');
     const workSection = document.querySelector('.works');
     const bigImage = document.createElement('img');
+    const imgPopup = document.createElement('div');
+    const scroll = calculateScrollWidth();
 
-
-    imgPopup.classList.add('popup');
     bigImage.classList.add('popup_content');
-    bigImage.style.minWidth = '35%';
     bigImage.style.maxHeight = '85%';
+    bigImage.style.minWidth = '35%';
+    imgPopup.classList.add('popup');
     workSection.append(imgPopup);
     imgPopup.append(bigImage);
 
@@ -16,15 +19,21 @@ const images = () => {
         const target = event.target;
         event.preventDefault();
 
+
         if (target && target.classList.contains('preview')) {
-            imgPopup.style.display = 'block';
-            bigImage.src = target.parentNode.href;
+            document.body.style.marginRight = `${scroll}px`;
             document.body.style.overflow = 'hidden';
+            bigImage.src = target.parentNode.href;
+            bigImage.classList.add('faded');
+            imgPopup.style.display = 'block';
         }
 
+
         if (target && target.matches('div.popup')) {
-            imgPopup.style.display = 'none';
+            bigImage.classList.remove('faded');
+            document.body.style.marginRight = '0px';
             document.body.style.overflow = '';
+            imgPopup.style.display = 'none';
         }
     });
 }
