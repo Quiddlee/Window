@@ -14124,8 +14124,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
-/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
-/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
+
 
 
 
@@ -14134,10 +14136,18 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const modalState = {};
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_3__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_3__["default"])('.decoration_slider', '.no_click', '[data-decoration-content]', 'after_click');
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_3__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  const modalState = {
+    form: 0,
+    width: null,
+    type: 'tree',
+    height: null,
+    profile: null
+  };
+  const deadline = new Date(Date.parse(new Date()) * 1.000361623);
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.decoration_slider', '.no_click', '[data-decoration-content]', 'after_click');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_4__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_3__["default"])('.container1', deadline);
   Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_0__["default"])(modalState);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState);
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(modalState);
@@ -14162,7 +14172,6 @@ const changeModalState = state => {
   const windowType = document.querySelectorAll('#view_type');
   const windowHeight = document.querySelectorAll('#height');
   const windowWidth = document.querySelectorAll('#width');
-  state.form = 0;
   Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#height');
   Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#width');
   const bindActionToElements = (event, element, property) => {
@@ -14224,14 +14233,44 @@ const checkNumInputs = selector => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const createOrDeleteStatusMessage = (OldElement, text) => {
+const createOrDeleteStatusMessage = function (message, appendElement, delay) {
+  let OldElement = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
   if (OldElement) OldElement.remove();
   const statusMessage = document.createElement('div');
-  statusMessage.innerHTML = text;
+  statusMessage.innerHTML = message;
   statusMessage.classList.add('status');
+  appendElement.append(statusMessage);
+  setTimeout(() => statusMessage.remove(), delay);
   return statusMessage;
 };
 /* harmony default export */ __webpack_exports__["default"] = (createOrDeleteStatusMessage);
+
+/***/ }),
+
+/***/ "./src/js/modules/formVisualValidate.js":
+/*!**********************************************!*\
+  !*** ./src/js/modules/formVisualValidate.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const formVisualValidate = (property, selector) => {
+  if (!property) {
+    const element = document.querySelectorAll(selector);
+    element.forEach(e => {
+      e.style.border = 'solid 1px red';
+      e.style.borderRadius = '5%';
+      e.addEventListener('click', () => e.style.border = '');
+      setTimeout(() => {
+        e.style.border = '';
+        e.removeEventListener('click', () => e.style.border = '');
+      }, 4000);
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (formVisualValidate);
 
 /***/ }),
 
@@ -14261,9 +14300,7 @@ const forms = state => {
   const bindPostData = form => {
     form.addEventListener('submit', event => {
       event.preventDefault();
-      let statusMessage;
-      statusMessage = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(null, messages.loading);
-      form.append(statusMessage);
+      const statusMessage = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(messages.loading, form, 4000);
       const formData = new FormData(form);
       if (form.getAttribute('data-calc') === 'end') {
         for (const key in state) {
@@ -14273,14 +14310,13 @@ const forms = state => {
       }
       Object(_services_cervices__WEBPACK_IMPORTED_MODULE_2__["postData"])('assets/server.php', formData).then(data => {
         console.log(data);
-        statusMessage = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(statusMessage, messages.success);
-        form.append(statusMessage);
+        statusMessage.remove();
+        Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(messages.success, form, 4000);
       }).catch(() => {
-        statusMessage = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(statusMessage, messages.failure);
-        form.append(statusMessage);
+        statusMessage.remove();
+        Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(messages.failure, form, 4000);
       }).finally(() => {
         allForms.forEach(form => form.reset());
-        setTimeout(() => statusMessage.remove(), 4000);
       });
     });
   };
@@ -14302,6 +14338,8 @@ const forms = state => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createOrDeleteStatusMessage */ "./src/js/modules/createOrDeleteStatusMessage.js");
+/* harmony import */ var _formVisualValidate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formVisualValidate */ "./src/js/modules/formVisualValidate.js");
+
 
 const modals = state => {
   function bindModal(modalSelector, triggerSelector, closeSelector) {
@@ -14310,21 +14348,29 @@ const modals = state => {
     const windows = document.querySelectorAll('[data-modal]');
     const modal = document.querySelector(modalSelector);
     const close = document.querySelector(closeSelector);
+    let statusMessage = null;
+    const isValidate = (property, secondProperty, selector, modalElement) => {
+      if (property && secondProperty) {
+        windows.forEach(window => window.style.display = 'none');
+        modal.style.display = 'block';
+      }
+      if (!property || !secondProperty) {
+        if (statusMessage) statusMessage.remove();
+        Object(_formVisualValidate__WEBPACK_IMPORTED_MODULE_1__["default"])(property, selector);
+        statusMessage = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])('Заполните данные', modalElement.parentNode, 4000);
+      }
+    };
     trigger.forEach(element => {
       element.addEventListener('click', event => {
         // if (modalTimerId) clearInterval(modalTimerId);
         if (event.target) event.preventDefault();
-        console.log(state);
         if (modal.getAttribute('data-modal') === 'calc') {
-          if (state.height && state.width) {
-            windows.forEach(window => window.style.display = 'none');
-            modal.style.display = 'block';
-          } else {
-            formVisualValidate(state.height, '#height');
-            formVisualValidate(state.width, '#width');
-            const check = Object(_createOrDeleteStatusMessage__WEBPACK_IMPORTED_MODULE_0__["default"])(null, 'Заполните данные');
-            modal.append(check);
-            setTimeout(() => check.remove(), 4000);
+          if (modal.className.match('end')) {
+            isValidate(state.profile, true, '.checkbox-custom', element);
+          }
+          if (!modal.className.match('end')) {
+            isValidate(state.height, state.width, '#height', element);
+            isValidate(state.width, state.height, '#width', element);
           }
         } else modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -14347,16 +14393,6 @@ const modals = state => {
   bindModal('.popup_engineer', '.popup_engineer_btn', '.popup_engineer .popup_close');
   bindModal('.popup_calc', '.popup_calc_btn', '.popup_calc_close');
   bindModal('.popup', '.phone_link', '.popup .popup_close');
-  const formVisualValidate = (property, selector) => {
-    if (!property) {
-      const element = document.querySelector(selector);
-      element.style.border = 'solid 1px red';
-      element.style.borderRadius = '5%';
-      setTimeout(() => {
-        element.style.border = '';
-      }, 4000);
-    }
-  };
 
   // const modalTimerId = setTimeout(() => {
   //     showModalByTime('.popup');
@@ -14414,6 +14450,63 @@ const tabs = function (headerSelector, tabsSelector, contentSelector, classActiv
   });
 };
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const timer = (renderId, deadline) => {
+  const addZero = number => {
+    if (number <= 9) return `0${number}`;
+    if (number > 9) return number;
+  };
+  const getTimeRemaining = endTime => {
+    const time = Date.parse(endTime) - Date.parse(new Date());
+    const seconds = Math.floor(time / 1000 % 60);
+    const minutes = Math.floor(time / 1000 / 60 & 60);
+    const hours = Math.floor(time / (1000 * 60 * 60) % 24);
+    const days = Math.floor(time / (1000 * 60 * 60 * 24));
+    return {
+      time,
+      seconds,
+      minutes,
+      hours,
+      days
+    };
+  };
+  const setClock = (selector, endTime) => {
+    const timer = document.querySelector(selector);
+    const days = timer.querySelector('#days');
+    const hours = timer.querySelector('#hours');
+    const minutes = timer.querySelector('#minutes');
+    const seconds = timer.querySelector('#seconds');
+    const timeInterval = setInterval(updateClock, 1000);
+    updateClock();
+    function updateClock() {
+      const time = getTimeRemaining(endTime);
+      days.textContent = addZero(time.days);
+      hours.textContent = addZero(time.hours);
+      minutes.textContent = addZero(time.minutes);
+      seconds.textContent = addZero(time.seconds);
+      if (time.total <= 0) {
+        days.textContent = '00';
+        hours.textContent = '00';
+        minutes.textContent = '00';
+        seconds.textContent = '00';
+        clearInterval(timeInterval);
+      }
+    }
+  };
+  setClock(renderId, deadline);
+};
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ }),
 
